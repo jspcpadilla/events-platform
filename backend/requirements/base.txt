@@ -1,0 +1,15 @@
+# Framework principal
+Django==5.2.2
+djangorestframework==3.16.0
+
+# Base de datos PostgreSQL
+psycopg2-binary==2.9.12
+
+# Autenticación JWT
+djangorestframework-simplejwt==5.3.1
+
+# Variables de entorno
+python-decouple==3.8
+
+# CORS (permitir que React llame a Django)
+django-cors-headers==4.3.1
