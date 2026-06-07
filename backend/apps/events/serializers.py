@@ -38,7 +38,8 @@ class EventDetailSerializer(serializers.ModelSerializer):
         queryset=Category.objects.all(),
         source='category',
         write_only=True,
-        required=False
+        required=False,
+        allow_null=True
     )
     organizer       = UserProfileSerializer(read_only=True)
     available_spots = serializers.ReadOnlyField()
@@ -58,7 +59,6 @@ class EventDetailSerializer(serializers.ModelSerializer):
         read_only_fields = ['slug', 'organizer', 'created_at', 'updated_at']
 
     def validate(self, attrs):
-        # Verificar que la fecha de fin sea después de la de inicio
         start = attrs.get('start_date', getattr(self.instance, 'start_date', None))
         end   = attrs.get('end_date',   getattr(self.instance, 'end_date',   None))
         if start and end and end <= start:
@@ -68,6 +68,11 @@ class EventDetailSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        # El organizador siempre es el usuario autenticado
         validated_data['organizer'] = self.context['request'].user
         return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        # Al editar, regenerar slug si el título cambió
+        if 'title' in validated_data and validated_data['title'] != instance.title:
+            instance.slug = ''
+        return super().update(instance, validated_data)

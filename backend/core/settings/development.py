@@ -7,6 +7,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 # En desarrollo, React en puerto 3000 puede llamar a Django en 8000
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
+    'http://localhost:5173',
 ]
 
 # Herramientas de desarrollo
